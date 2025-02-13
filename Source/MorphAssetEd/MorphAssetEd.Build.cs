@@ -9,7 +9,7 @@ public class MorphAssetEd : ModuleRules
         PublicDependencyModuleNames.AddRange(
             new string[]
             {
-                "Core"
+                "Core", "UnrealEd"
             }
         );
 

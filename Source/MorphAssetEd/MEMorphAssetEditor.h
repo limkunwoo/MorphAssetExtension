@@ -28,5 +28,5 @@ public:
 	virtual FLinearColor GetWorldCentricTabColorScale() const override { return FColor::Blue; }
 private:
 	TObjectPtr<UMEMorphAsset> MorphAsset;
-	TWeakPtr<FMorphAssetPreviewScene> PreviewScene;
+	TSharedPtr<FMorphAssetPreviewScene> PreviewScene;
 };
