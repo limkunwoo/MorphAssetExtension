@@ -23,7 +23,8 @@ public class MorphAssetEd : ModuleRules
                 "SlateCore",
                 "AssetTools",
                 "MorphAssetExtension",
-                "AdvancedPreviewScene"
+                "AdvancedPreviewScene",
+                "PropertyEditor",
             }
         );
     }

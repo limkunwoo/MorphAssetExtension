@@ -26,6 +26,9 @@ public:
 	virtual FText GetBaseToolkitName() const override { return INVTEXT("ME Morph Asset Editor"); }
 	virtual FString GetWorldCentricTabPrefix() const override { return TEXT("ME Morph Asset "); }
 	virtual FLinearColor GetWorldCentricTabColorScale() const override { return FColor::Blue; }
+	TSharedPtr<FMorphAssetPreviewScene> GetMorphAssetPreviewScene() { return PreviewScene; };
+
+	UMEMorphAsset* GetMorphAsset() { return MorphAsset; }
 private:
 	TObjectPtr<UMEMorphAsset> MorphAsset;
 	TSharedPtr<FMorphAssetPreviewScene> PreviewScene;

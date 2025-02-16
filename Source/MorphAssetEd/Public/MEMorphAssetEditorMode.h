@@ -6,6 +6,7 @@
 #include "WorkflowOrientedApp/ApplicationMode.h"
 #include "WorkflowOrientedApp/WorkflowTabManager.h"
 
+class FMorphAssetPreviewScene;
 /**
  * 
  */
@@ -17,7 +18,9 @@ public:
 	FMEMorphAssetEditorMode(const TSharedRef<FMEMorphAssetEditor>& InMorphAssetEditor);
 	virtual ~FMEMorphAssetEditorMode() override = default;
 
+	virtual void RegisterTabFactories(TSharedPtr<FTabManager> InTabManager) override;
 protected:
 	FWorkflowAllowedTabSet TabFactories;
 	TWeakPtr<FMEMorphAssetEditor> EditorPtr;
+	TWeakPtr<FMorphAssetPreviewScene> PreviewScenePtr;
 };

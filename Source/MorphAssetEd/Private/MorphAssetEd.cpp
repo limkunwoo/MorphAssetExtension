@@ -1,7 +1,7 @@
 ﻿#include "MorphAssetEd.h"
+
+#include "MEMorphAssetEditor.h"
 #include "MorphAssetTypeAction.h"
-#include "MorphAssetExtension/MEMorphAsset.h"
-#include "MorphAssetEd/MEMorphAssetEditor.h"
 
 void FMorphAssetEdModule::StartupModule()
 {

@@ -8,5 +8,7 @@ namespace MorphAssetEdNames
 
 namespace MorphAssetTabNames
 {
-	extern const FName T;
+	extern const FName ViewportTab;
+	extern const FName Details;
+	extern const FName MEPreviewTab;
 }

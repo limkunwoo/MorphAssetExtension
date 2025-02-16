@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AssetTypeActions_Base.h"
+#include "MEMorphAssetEditor.h"
 #include "MorphAssetExtension/MEMorphAsset.h"
 /**
  * 
@@ -15,4 +16,10 @@ public:
 	virtual FText GetName() const override { return FText::FromString("Morph Asset"); }
 	virtual FColor GetTypeColor() const override { return FColor::Blue; }
 	virtual uint32 GetCategories() override { return EAssetTypeCategories::Misc; };
+
+	virtual void OpenAssetEditor( const TArray<UObject*>& InObjects, TSharedPtr<class IToolkitHost> EditWithinLevelEditor = TSharedPtr<IToolkitHost>() ) override
+	{
+		TSharedRef<FMEMorphAssetEditor> Editor = MakeShareable(new FMEMorphAssetEditor());
+		Editor->InitMEMorphAssetEditor(EToolkitMode::Standalone,nullptr, Cast<UMEMorphAsset>(InObjects[0]));
+	}
 };

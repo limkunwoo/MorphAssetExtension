@@ -5,6 +5,7 @@
 #include "MorphAssetPreviewScene.h"
 #include "MEMorphAssetEditorMode.h"
 #include "MorphAssetEdNames.h"
+#include "Animation/DebugSkelMeshComponent.h"
 #include "MorphAssetExtension/MEMorphAsset.h"
 
 
@@ -23,6 +24,17 @@ void FMEMorphAssetEditor::InitMEMorphAssetEditor(const EToolkitMode::Type Mode,
 	const bool bCreateDefaultToolbar = true;
 	MorphAsset = InMorphAsset;
 	PreviewScene = MakeShared<FMorphAssetPreviewScene>(FPreviewScene::ConstructionValues().AllowAudioPlayback(true).ShouldSimulatePhysics(true), SharedThis(this));
+	AActor* PreviewActor = PreviewScene->GetWorld()->SpawnActor<AActor>(AActor::StaticClass(), FTransform::Identity);
+	PreviewScene->SetActor(PreviewActor);
+	
+	UDebugSkelMeshComponent* PreviewSkeletalComponent = NewObject<UDebugSkelMeshComponent>(PreviewActor);
+	PreviewSkeletalComponent->SetUpdateAnimationInEditor(true);
+	PreviewSkeletalComponent->bTickInEditor = true;
+	
+	PreviewScene->AddComponent(PreviewSkeletalComponent, FTransform::Identity);
+	PreviewScene->SetPreviewMeshComponent(PreviewSkeletalComponent);
+	PreviewActor->SetRootComponent(PreviewSkeletalComponent);
+	
 	InitAssetEditor(Mode, InitToolkotHost, MorphAssetEdNames::MEMorphAssetEditorAppName, FTabManager::FLayout::NullLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, InMorphAsset);
 	AddApplicationMode(
 			MorphAssetEdNames::MEMorphAssetEditorModeName,
