@@ -15,8 +15,9 @@ class MORPHASSETED_API FMEPreviewViewportClient : public FEditorViewportClient, 
 public:
 	FMEPreviewViewportClient(const TSharedRef<FMEMorphAssetEditor>& InEditor, const TSharedRef<FMorphAssetPreviewScene>& InPreviewScene, const TSharedRef<SMEPreviewViewport>& InViewport);
 	~FMEPreviewViewportClient();
-
+	virtual void Tick(float DeltaTime) override;
 private:
+	void InvalidateView();
 	TWeakPtr<FMEMorphAssetEditor> Editor;
 	TWeakPtr<FMorphAssetPreviewScene> PreviewScene;
 	TWeakPtr<SMEPreviewViewport> Viewport;

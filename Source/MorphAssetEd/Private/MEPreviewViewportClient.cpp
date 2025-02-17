@@ -11,9 +11,20 @@ FMEPreviewViewportClient::FMEPreviewViewportClient(const TSharedRef<FMEMorphAsse
 	FEditorViewportClient(&InEditor->GetEditorModeManager(), &InPreviewScene.Get(), StaticCastSharedRef<SEditorViewport>(InViewport)),
 	Editor(InEditor), PreviewScene(InPreviewScene), Viewport(InViewport)
 {
-	SetViewMode(VMI_Lit);
+	FEditorViewportClient::SetViewMode(VMI_Lit);
+	PreviewScene.Pin()->OnInvalidateScene.AddRaw(this, &FMEPreviewViewportClient::InvalidateView);
 }
 
 FMEPreviewViewportClient::~FMEPreviewViewportClient()
 {
+}
+
+void FMEPreviewViewportClient::Tick(float DeltaTime)
+{
+	FEditorViewportClient::Tick(DeltaTime);
+}
+
+void FMEPreviewViewportClient::InvalidateView()
+{
+	Invalidate();
 }

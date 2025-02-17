@@ -28,7 +28,9 @@ public:
 	virtual void HandleMeshChanged(const FAssetData& AssetData) const;
 
 private:
+	void ValidateMorphTargetList(UMEMorphAsset* ObjectToEdit) const;
 	TWeakPtr<FMEMorphAssetEditor> Editor;
 	TWeakPtr<FMorphAssetPreviewScene> PreviewScene;
 	UMEMorphAsset* MorphAsset;
+	IDetailLayoutBuilder* MyDetailLayout;
 };

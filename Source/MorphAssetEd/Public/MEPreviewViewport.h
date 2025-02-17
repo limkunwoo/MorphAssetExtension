@@ -9,8 +9,10 @@ class FMEPreviewViewportClient;
 /**
  * 
  */
+
 class FMEMorphAssetEditor;
 class FMorphAssetPreviewScene;
+
 class MORPHASSETED_API SMEPreviewViewport : public SEditorViewport
 {
 public:
@@ -23,7 +25,7 @@ public:
 	virtual TSharedRef<FEditorViewportClient> MakeEditorViewportClient() override;
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
-
+	
 private:
 	TWeakPtr<FMEMorphAssetEditor> Editor;
 	TWeakPtr<FMorphAssetPreviewScene> PreviewScene;

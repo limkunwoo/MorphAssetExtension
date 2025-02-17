@@ -31,10 +31,14 @@ void SMEMorphAssetDetailCustomization::HandleValueChanged(float X, FName TargetN
 {
 	Editor.Pin()->GetMorphAsset()->MorphTargets[TargetName] = X;
 	PreviewScene.Pin()->GetPreviewMeshComponent()->SetMorphTarget(TargetName, X);
+	PreviewScene.Pin()->InvalidateVeiw();
 }
 
 void SMEMorphAssetDetailCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
+	MyDetailLayout = &DetailBuilder;
+	ValidateMorphTargetList(Editor.Pin()->GetMorphAsset());
+	PreviewScene.Pin()->SetPreviewMesh(Editor.Pin()->GetMorphAsset()->TargetMesh);
 	TSharedRef<IPropertyHandle> SkeletalMeshProperty = DetailBuilder.GetProperty(GET_MEMBER_NAME_CHECKED(UMEMorphAsset, TargetMesh));
 	SkeletalMeshProperty->MarkHiddenByCustomization();
 	
@@ -128,7 +132,29 @@ void SMEMorphAssetDetailCustomization::CustomizeDetails(IDetailLayoutBuilder& De
 void SMEMorphAssetDetailCustomization::HandleMeshChanged(const FAssetData& AssetData) const
 {
 	USkeletalMesh* NewPreviewMesh = Cast<USkeletalMesh>(AssetData.GetAsset());
+	MorphAsset->TargetMesh = NewPreviewMesh;
+	ValidateMorphTargetList(MorphAsset);
 	PreviewScene.Pin()->SetPreviewMesh(NewPreviewMesh);
+	MyDetailLayout->ForceRefreshDetails();
+}
+
+void SMEMorphAssetDetailCustomization::ValidateMorphTargetList(UMEMorphAsset* ObjectToEdit) const
+{
+	TSet<FName> DesiredMorphTargets;	
+	for(UMorphTarget* MorphTarget : ObjectToEdit->TargetMesh->GetMorphTargets())
+	{
+		DesiredMorphTargets.Add(FName(MorphTarget->GetName()));
+		ObjectToEdit->MorphTargets.FindOrAdd(FName(MorphTarget->GetName()));
+	}
+
+	TSet<FName> CurrentMorphTargets;
+	ObjectToEdit->MorphTargets.GetKeys(CurrentMorphTargets);
+
+	TSet ToRemove = CurrentMorphTargets.Difference(DesiredMorphTargets);
+	for (FName RemoveTargetName : ToRemove)
+	{
+		ObjectToEdit->MorphTargets.Remove(RemoveTargetName);
+	}
 }
 
 

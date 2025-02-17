@@ -4,6 +4,7 @@
 #include "MorphAssetPreviewScene.h"
 
 #include "MEPreviewSceneDesc.h"
+#include "Animation/DebugSkelMeshComponent.h"
 
 
 FMorphAssetPreviewScene::FMorphAssetPreviewScene(const ConstructionValues& CVS, const TSharedPtr< FMEMorphAssetEditor>& InEditor) : FAdvancedPreviewScene(CVS), Editor(InEditor)
@@ -16,8 +17,14 @@ FMorphAssetPreviewScene::~FMorphAssetPreviewScene()
 {
 }
 
+void FMorphAssetPreviewScene::Tick(float InDeltaTime)
+{
+	GetWorld()->Tick(ELevelTick::LEVELTICK_All, InDeltaTime);
+	FAdvancedPreviewScene::Tick(InDeltaTime);
+}
+
 void FMorphAssetPreviewScene::AddComponent(class UActorComponent* Component, const FTransform& LocalToWorld,
-	bool bAttachToRoot)
+                                           bool bAttachToRoot)
 {
 	if (bAttachToRoot)
     {
@@ -49,7 +56,14 @@ USkeletalMesh* FMorphAssetPreviewScene::GetPreviewMesh()
 void FMorphAssetPreviewScene::SetPreviewMesh(USkeletalMesh* InPreviewMesh)
 {
 	PreviewSceneDescription->PreviewMesh = InPreviewMesh;
-	PreviewSkeletalMeshComponent->SetSkeletalMesh(InPreviewMesh);
+	UDebugSkelMeshComponent* DebugSkeletalMeshComp = Cast<UDebugSkelMeshComponent>(PreviewSkeletalMeshComponent);
+	
+	DebugSkeletalMeshComp->SetSkeletalMesh(InPreviewMesh);
+	DebugSkeletalMeshComp->bTickInEditor = true;
+	DebugSkeletalMeshComp->SetUpdateAnimationInEditor(true);
+	DebugSkeletalMeshComp->InitAnim(true);
+
+	DebugSkeletalMeshComp->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
 bool FMorphAssetPreviewScene::PreviewComponentSelectionOverride(const UPrimitiveComponent* InComponent) const
@@ -60,6 +74,10 @@ bool FMorphAssetPreviewScene::PreviewComponentSelectionOverride(const UPrimitive
 		return (Component->GetSelectedEditorSection() != INDEX_NONE || Component->GetSelectedEditorMaterial() != INDEX_NONE);
 	}
 	return false;
+}
+void FMorphAssetPreviewScene::InvalidateVeiw()
+{
+	OnInvalidateScene.Broadcast();
 }
 
 void FMorphAssetPreviewScene::AddReferencedObjects(FReferenceCollector& Collector)

@@ -19,7 +19,6 @@ void SMEPreviewViewport::Construct(const FArguments& InArgs)
 {
 	Editor = InArgs._Editor;
 	PreviewScene = InArgs._Editor.Pin()->GetMorphAssetPreviewScene();
-	
 	SEditorViewport::Construct(SEditorViewport::FArguments());
 }
 
