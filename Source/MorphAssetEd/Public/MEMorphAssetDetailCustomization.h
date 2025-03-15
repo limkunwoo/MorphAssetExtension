@@ -27,6 +27,8 @@ public:
 
 	virtual void HandleMeshChanged(const FAssetData& AssetData) const;
 
+	void AddTestPartsAssetCategory(IDetailLayoutBuilder& DetailBuilder);
+	TSharedRef<SWidget> CreateAssetElementCustomWidget(const IDetailLayoutBuilder& DetailBuilder, const TSharedRef<IPropertyHandle>& AssetElementMapHandle);
 private:
 	void ValidateMorphTargetList(UMEMorphAsset* ObjectToEdit) const;
 	TWeakPtr<FMEMorphAssetEditor> Editor;
@@ -34,3 +36,4 @@ private:
 	UMEMorphAsset* MorphAsset;
 	IDetailLayoutBuilder* MyDetailLayout;
 };
+
